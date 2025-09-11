@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #afe6c6, #d6fbfe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signup-form-container {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+}
+
+.signup-form-container .fa-times {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.signup-form-container .fa-times:hover {
+  color: #ff4d4d;
+}
+
+.signup-form-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.signup-form-container span {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.signup-form-container .box {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.signup-form-container .box:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.signup-form-container .check-box {
+  margin-top: 1rem;
+  accent-color: #4caf50;
+}
+
+.signup-form-container label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-left: 0.5rem;
+}
+
+.signup-form-container .btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signup-form-container .btn:hover {
+  background-color: #388e3c;
+}
+
+.signup-form-container a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.signup-form-container a:hover {
+  text-decoration: underline;
+}
+
+.signup-form-container p {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
