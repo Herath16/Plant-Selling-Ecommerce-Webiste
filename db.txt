@@ -1,0 +1,19 @@
+create database plant_shop;
+use plant_shop;
+create table products(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name varchar(100),
+    price INT,
+    imege_url varchar(200)
+);
+CREATE TABLE cart_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    product_id INT,
+    quantity INT,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+insert into products(name, price, image_url) values ("Aloe Vera", 250.00, "images/product1.jpg"),("Snake Plant", 300.00, "images/product2.jpg"),("Peace Lily", 400.00,"images/product3.jpg");
+insert into cart_items(user_id, product_id, quantity) values (22, 01, 3),(11, 02, 01);
+select * from cart_items;
+select * from products;

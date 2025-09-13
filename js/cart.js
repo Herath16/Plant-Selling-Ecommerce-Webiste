@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTotalElement = document.getElementById('cart-total');
 
     // A hardcoded user ID for demonstration. In a real app, this would come from a user session.
-    const userId = 1;
+    const userId = 11;
 
     async function fetchCartData() {
         try {
-            const response = await fetch(`http://localhost:3000/api/cart/${userId}`);
+            const response = await fetch(`http://localhost:3000/cart/${userId}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -53,3 +53,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchCartData();
 });
+
