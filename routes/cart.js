@@ -67,4 +67,28 @@ router.post('/add', (req, res) => {
     });
 });
 
+// DELETE /cart/remove
+router.delete('/remove', (req, res) => {
+    const { userId, productId } = req.body;
+
+    if (!userId || !productId) {
+        return res.status(400).json({ message: 'User ID and Product ID are required.' });
+    }
+
+    const query = `DELETE FROM cart_items WHERE user_id = ? AND product_id = ?`;
+    
+    db.query(query, [userId, productId], (err, result) => {
+        if (err) {
+            console.error('Error removing item from cart:', err);
+            return res.status(500).send('Server error');
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Item not found in cart.' });
+        }
+        
+        res.status(200).json({ message: 'Item removed successfully!' });
+    });
+});
+
 module.exports = router;
