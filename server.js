@@ -6,6 +6,9 @@ const cors = require('cors'); // Use CORS to allow requests from the same origin
 const app = express();
 const port = 3000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 app.use(cors());
 
 // Serve static files from the root directory

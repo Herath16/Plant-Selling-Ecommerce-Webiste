@@ -100,47 +100,79 @@ setInterval(function() {
 }, 1000)
 
 
-//products
-
+// In script.js
 fetch('http://localhost:3000/products')
 .then(response => response.json())
 .then(products => {
     console.log('Fetching products...');
-    console.log(products); // This will show the array of product objects
+    console.log(products);
 
     const container = document.getElementById('product-list');
     container.innerHTML = ''; // Clear any existing content
 
     products.forEach(product => {
-        console.log(product);
         const box = document.createElement('div');
         box.className = 'box';
         box.innerHTML = `
             <span class="discount">-10%</span>
             <div class="icons">
-            <a href="#" class="fas fa-heart"></a>
-            <a href="#" class="fas fa-share"></a>
-            <a href="#" class="fas fa-eye"></a>
+                <a href="#" class="fas fa-heart"></a>
+                <a href="#" class="fas fa-share"></a>
+                <a href="#" class="fas fa-eye"></a>
             </div>
             <img src="${product.image_url}" alt="${product.name}">
             <h3>${product.name}</h3>
             <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
             </div>
             <div class="quantify">
-            <span>Quantify:</span>
-            <input type="number" min="1" max="100" value="1" placeholder="quantity">
+                <span>Quantity:</span>
+                <input type="number" min="1" max="100" value="1" id="quantity-${product.id}">
             </div>
             <div class="price">
-            $${product.price.toFixed(2)}<span> $${(product.price * 1.1).toFixed(2)}</span>
+                $${product.price.toFixed(2)}<span> $${(product.price * 1.1).toFixed(2)}</span>
             </div>
-            <a href="#" class="btn">Add to cart</a> `;
+            <a href="#" class="btn" data-product-id="${product.id}">Add to cart</a>`;
         container.appendChild(box);
+    });
+
+    const addToCartButtons = document.querySelectorAll('.box .btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const productId = event.target.dataset.productId;
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            
+            // Check if quantity input exists before trying to access its value
+            if (!quantityInput) {
+                console.error("Quantity input element not found for product:", productId);
+                return;
+            }
+
+            const quantity = parseInt(quantityInput.value);
+            const userId = 11; // Hardcoded user ID
+
+            const response = await fetch('http://localhost:3000/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId,
+                    productId,
+                    quantity
+                })
+            });
+
+            const result = await response.json();
+            console.log(result.message);
+            alert(result.message);
+        });
     });
 })
 .catch(error => {
