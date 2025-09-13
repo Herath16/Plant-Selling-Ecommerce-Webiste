@@ -42,15 +42,46 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1">
                     </div>
                 </div>
-                <button class="remove-item-btn" data-product-id="${item.id}"><i class="fas fa-trash"></i></button>`;
+                <button class="remove-item-btn" style="border: solid black 2px; width:100px; height: 40px" data-product-id="${item.id}"><i class="fas fa-trash"></i></button>`;
             
             cartItemsContainer.appendChild(itemBox);
             total += item.price * item.quantity;
         });
 
         cartTotalElement.innerText = `$${total.toFixed(2)}`;
+
+        // This is the CRITICAL change: Add event listeners after elements are created
+        const removeButtons = document.querySelectorAll('.remove-item-btn');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', async (event) => {
+                // Find the closest parent button that has the data-product-id attribute
+                const buttonElement = event.target.closest('.remove-item-btn');
+                const productId = buttonElement.dataset.productId;
+                const userId = 11;
+
+                try {
+                    const response = await fetch('http://localhost:3000/cart/remove', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userId, productId })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        fetchCartData(); // Re-fetch data to update the cart display
+                    } else {
+                        throw new Error(result.message || 'Failed to remove item.');
+                    }
+                } catch (error) {
+                    console.error("Failed to remove item:", error);
+                    alert(`Error: ${error.message}`);
+                }
+            });
+        });
     }
 
-    fetchCartData();
+    fetchCartData(); // Initial fetch to load the cart
 });
-

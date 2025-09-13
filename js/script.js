@@ -171,7 +171,6 @@ fetch('http://localhost:3000/products')
 
             const result = await response.json();
             console.log(result.message);
-            alert(result.message);
         });
     });
 })
