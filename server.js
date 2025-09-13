@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 // Route for cart page
 app.get('/cart', (req, res) => {
-    res.sendFile(path.join(__dirname, 'cart.html'));
+   res.sendFile(path.join(__dirname, 'cart.html'));
 });
 
 // Route for sign-in page
