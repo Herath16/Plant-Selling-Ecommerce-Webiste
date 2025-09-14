@@ -7,21 +7,17 @@
     </head>
     <body>
         <div class="login-form-container">
-            <form action="">
-                <div id="close-login-btn" class="fas fa-close"></div>
-                <h3>Sign in</h3>
-                <span>Username</span>
-                <input type="email" class="box" name="" placeholder="Enter your username..." id="">
-                <span>Password</span>
-                <input type="password" class="box" name="" placeholder="Enter your password..." id="">
-                <div class="check-box">
-                    <input type="checkbox" name="" id="remember-me">
-                    <label for="remember-me">Remember me</label>
-                </div>
-                <input type="submit" value="Sign in" class="btn">
-                <p>Forget password?<a href="#">click here</a></p>
-                <p>Don't have an account ? <a href="singup.html">Sign up</a></p>
-            </form>
-        </div>
+        <form action="" id="login-form">
+        <h3>login now</h3>
+        <input type="email" placeholder="your email" class="box" id="login-email">
+        <input type="password" placeholder="your password" class="box" id="login-password">
+        <input type="submit" value="login" class="btn">
+        <input type="checkbox" id="remember-me">
+        <label for="remember-me">remember me</label>
+        <p>forget password? <a href="#">click here</a></p>
+        <p>don't have an account? <a href="singup.html" id="register-link">create one</a></p>
+    </form>
+    <script src="js/auth.js"></script>
+</div>
     </body>
 </html>

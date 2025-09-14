@@ -1,3 +1,54 @@
+// In script.js
+// Place these at the top of your script
+const loginBtn = document.getElementById('login-btn');
+const logoutBtn = document.getElementById('logout-btn');
+
+// Function to handle displaying the logged-in user and buttons
+async function displayLoggedInUser() {
+    const userId = localStorage.getItem('userId');
+    const userInfoDiv = document.getElementById('user-info');
+    
+    // Check if the login and logout buttons exist before manipulating them
+    if (loginBtn && logoutBtn) {
+        if (userId) {
+            // User is logged in
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'block';
+
+            try {
+                const response = await fetch(`http://localhost:3000/auth/user/${userId}`);
+                const result = await response.json();
+
+                if (response.ok && result.user) {
+                    userInfoDiv.innerHTML = `<span>Hello, ${result.user.username}!</span>`;
+                } else {
+                    userInfoDiv.innerHTML = '<span>Guest</span>';
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+                userInfoDiv.innerHTML = '<span>Guest</span>';
+            }
+        } else {
+            // User is not logged in
+            loginBtn.style.display = 'block';
+            logoutBtn.style.display = 'none';
+            userInfoDiv.innerHTML = '<span>Guest</span>';
+        }
+    }
+}
+
+// Add the logout event listener
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent the link from navigating
+        localStorage.removeItem('userId'); // Remove the user ID from storage
+        window.location.reload(); // Reload the page to update the UI
+    });
+}
+
+// Call the function to set the initial state when the page loads
+displayLoggedInUser();
+
 // Place all variable declarations at the top
 const barmenu = document.querySelector('.nav-bar');
 const navbars = document.querySelector('#menu-bar');
@@ -73,7 +124,7 @@ let swiper = new Swiper(".home-slider", {
     loop: true,
 });
 
-let countDate = new Date('june 1, 2023 00:00:00').getTime();
+let countDate = new Date('May 1, 2026 00:00:00').getTime();
 
 function countDown() {
     let now = new Date().getTime();
@@ -155,7 +206,17 @@ fetch('http://localhost:3000/products')
             }
 
             const quantity = parseInt(quantityInput.value);
-            const userId = 11; // Hardcoded user ID
+
+            // Get userId from localStorage
+            const userId = localStorage.getItem('userId');
+
+            // Redirect to signin if not logged in
+            if (!userId) {
+                alert('Please sign in to add items to your cart.');
+                window.location.href = 'signin.html';
+                return;
+            }
+            //const userId = 11; // Hardcoded user ID
 
             const response = await fetch('http://localhost:3000/cart/add', {
                 method: 'POST',

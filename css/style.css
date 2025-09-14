@@ -135,6 +135,7 @@ html {
 }
 
 .header-3 {
+    display: flex;
     background: #fff;
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
     position: relative;
@@ -159,6 +160,9 @@ html {
     color: #666;
     font-size: 2rem;
     margin-left: 2rem;
+}
+.header-3 .icons{
+    width:300px;
 }
 
 .header-3 .icons a:hover {
@@ -277,6 +281,30 @@ html {
     text-align: center;
     font-size: 3rem;
     color: #444;
+}
+
+.fa-sign-out-alt{
+    margin: 0;
+}
+
+#user_options {
+    list-style: none;
+    display: flex;       /* makes items go in one row */
+    align-items: center; /* centers vertically */
+    gap: 10px;           /* space between icons */
+    padding: 0;
+    margin: 0;
+}
+
+#user_option {
+    display: inline-block; /* or keep flex item default */
+}
+
+
+#user-info{
+    font-size: 15px;
+    font-weight: bold;
+    margin: 13px 10px 13px 20px;
 }
 
 
