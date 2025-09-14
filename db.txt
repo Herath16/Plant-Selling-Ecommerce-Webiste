@@ -15,5 +15,25 @@ CREATE TABLE cart_items (
 );
 insert into products(name, price, image_url) values ("Aloe Vera", 250.00, "images/product1.jpg"),("Snake Plant", 300.00, "images/product2.jpg"),("Peace Lily", 400.00,"images/product3.jpg");
 insert into cart_items(user_id, product_id, quantity) values (22, 01, 3),(11, 02, 01);
+insert into products(name, price, image_url) values ("Ornamental grasses", 150.00, "images/product4.jpg"),("Water Lily", 350.00, "images/product5.jpg"),("Palm Tree", 550.00, "images/product6.jpg");
 select * from cart_items;
 select * from products;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+select * from users;
+
+ALTER TABLE cart_items ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
+
+INSERT INTO users (id, username, email, password) VALUES(1, 'Jhon', 'green.thumb@example.com', '$2a$10$wT.9v0jR.3K6Y1g4R6f1c.O.f0j6f6X2k5K5z.m.f1f2h4G1j2y4'),
+(2, 'Jenifer', 'plant.lover@example.com', '$2a$10$fW3y5fT.7K8o4n6L.8y.k0q.h2v.r8o5m.z.f1e3g2h4j2a6'),
+(11, 'Scott', 'admin.user@example.com', '$2a$10$kP.3z5x.1R8j2a9h.6c5v.9i8y.c2o9p0e.f8c2b1d3a9g0'),
+(22, 'Will', 'will.user@example.com', '$2a$10$kP.3z5x.1R8j2a9h.6c5v.9i8y.r8o5.f8c2b1d3a9g0');
+
+UPDATE users SET password = '$2b$10$ZemIIkWGaWhDaNFgHiXGyOEmzj2qoHzjNCoWNgNFBha9LfHhTPPJS' WHERE email = 'admin.user@example.com';
+UPDATE users SET password = '$2b$10$Sk5Xc/1v4xbsrRArEsSmDOtxGrtZbMn8tXStmozj50PjkwyK1ncyi' WHERE email = 'will.user@example.com';
+
