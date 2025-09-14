@@ -37,6 +37,10 @@ app.use('/products', productsRouter);
 const cartRouter = require('./routes/cart');
 app.use('/cart', cartRouter);
 
+// Modular route for authentication
+const authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).send('404: Page not found');

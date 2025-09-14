@@ -4,7 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTotalElement = document.getElementById('cart-total');
 
     // A hardcoded user ID for demonstration. In a real app, this would come from a user session.
-    const userId = 11;
+    //const userId = 11;
+
+    // Get userId from localStorage
+    const userId = localStorage.getItem('userId');
+
+    // Redirect to signin if not logged in
+    if (!userId) {
+        alert('Please sign in to add items to your cart.');
+        window.location.href = 'signin.html';
+        return;
+    }
 
     async function fetchCartData() {
         try {
@@ -57,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Find the closest parent button that has the data-product-id attribute
                 const buttonElement = event.target.closest('.remove-item-btn');
                 const productId = buttonElement.dataset.productId;
-                const userId = 11;
+                //const userId = 11;
 
                 try {
                     const response = await fetch('http://localhost:3000/cart/remove', {
