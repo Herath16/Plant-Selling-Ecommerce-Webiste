@@ -77,7 +77,7 @@ router.get('/user/:userId', (req, res) => {
     const userId = req.params.userId;
 
     // Fetch user details from the database
-    const query = 'SELECT username, email FROM users WHERE id = ?';
+    const query = 'SELECT username, email, role FROM users WHERE id = ?';
     db.query(query, [userId], (err, results) => {
         if (err) {
             console.error('Error fetching user details:', err);
@@ -92,4 +92,31 @@ router.get('/user/:userId', (req, res) => {
 });
 
 
-module.exports = router;
+// Middleware to check if the user is an admin
+const isAdmin = (req, res, next) => {
+    const userId = req.body.userId || req.params.userId; // Get user ID from body or params
+
+    if (!userId) {
+        return res.status(401).json({ message: 'Authentication failed. No user ID provided.' });
+    }
+
+    const query = 'SELECT role FROM users WHERE id = ?';
+    db.query(query, [userId], (err, results) => {
+        if (err || results.length === 0) {
+            console.error('Error fetching user role:', err);
+            return res.status(401).json({ message: 'Authentication failed. User not found.' });
+        }
+
+        const userRole = results[0].role;
+        if (userRole === 'admin') {
+            next(); // User is an admin, proceed to the next handler
+        } else {
+            res.status(403).json({ message: 'Access denied. Administrator privileges required.' });
+        }
+    });
+};
+
+module.exports = {
+    router,
+    isAdmin
+};
