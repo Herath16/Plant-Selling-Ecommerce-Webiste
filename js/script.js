@@ -2,6 +2,8 @@
 // Place these at the top of your script
 const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.getElementById('logout-btn');
+const cartIcon = document.querySelector('.fas.fa-shopping-cart');
+
 
 // Function to handle displaying the logged-in user and buttons
 async function displayLoggedInUser() {
@@ -21,6 +23,12 @@ async function displayLoggedInUser() {
 
                 if (response.ok && result.user) {
                     userInfoDiv.innerHTML = `<span>Hello, ${result.user.username}!</span>`;
+                    if (cartIcon && result.user.role === 'admin') {
+                        cartIcon.href = 'admin.html';
+                    } else if (cartIcon) {
+                        cartIcon.href = 'cart.html'; // Ensure it links to the cart for regular users
+                    }
+
                 } else {
                     userInfoDiv.innerHTML = '<span>Guest</span>';
                 }
@@ -33,6 +41,9 @@ async function displayLoggedInUser() {
             loginBtn.style.display = 'block';
             logoutBtn.style.display = 'none';
             userInfoDiv.innerHTML = '<span>Guest</span>';
+            if (cartIcon) {
+                cartIcon.href = 'cart.html'; // Ensure it links to the cart when not logged in
+            }
         }
     }
 }

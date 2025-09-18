@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors'); // Use CORS to allow requests from the same origin
 
 
+
 const app = express();
 const port = 3000;
 
@@ -38,7 +39,7 @@ const cartRouter = require('./routes/cart');
 app.use('/cart', cartRouter);
 
 // Modular route for authentication
-const authRouter = require('./routes/auth');
+const { router: authRouter, isAdmin } = require('./routes/auth');
 app.use('/auth', authRouter);
 
 // 404 handler
