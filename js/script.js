@@ -11,7 +11,7 @@ document.querySelector("#menu-bar").onclick = () => {
     barmenu.addEventListener('click',()=>{
         navbars.classList.toggle('fa-times');
         barmenu.classList.toggle('active');
-    })
+    }) jdndjn
     */
 
 window.onscroll = () => {
