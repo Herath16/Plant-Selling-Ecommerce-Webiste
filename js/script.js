@@ -200,6 +200,8 @@ fetch('http://localhost:3000/products')
                 $${product.price.toFixed(2)}<span> $${(product.price * 1.1).toFixed(2)}</span>
             </div>
             <a href="#" class="btn" data-product-id="${product.id}">Add to cart</a>`;
+        box.style.maxWidth = 386;
+        box.style.maxHeight = 531;
         container.appendChild(box);
     });
 
@@ -241,7 +243,21 @@ fetch('http://localhost:3000/products')
                 })
             });
 
+
             const result = await response.json();
+
+            // --- RESPONSE LOGIC: PROVIDES USER FEEDBACK ---
+            if (response.ok) {
+                // Success (200/201): Item was added and stock was reduced
+                alert(`🛒 Success!`); 
+                
+                // You can add logic here to update the cart icon count if needed
+            } else {
+                // Failure (400 or 500): This will show 'Insufficient stock.' or a server error
+                alert(`❌ Failed to add item`);
+            }
+            
+
             console.log(result.message);
         });
     });

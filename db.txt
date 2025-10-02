@@ -37,3 +37,5 @@ INSERT INTO users (id, username, email, password) VALUES(1, 'Jhon', 'green.thumb
 UPDATE users SET password = '$2b$10$ZemIIkWGaWhDaNFgHiXGyOEmzj2qoHzjNCoWNgNFBha9LfHhTPPJS' WHERE email = 'admin.user@example.com';
 UPDATE users SET password = '$2b$10$Sk5Xc/1v4xbsrRArEsSmDOtxGrtZbMn8tXStmozj50PjkwyK1ncyi' WHERE email = 'will.user@example.com';
 
+ALTER TABLE users ADD COLUMN role VARCHAR(50) NOT NULL DEFAULT 'user';
+UPDATE users SET role = 'admin' WHERE id = 11;

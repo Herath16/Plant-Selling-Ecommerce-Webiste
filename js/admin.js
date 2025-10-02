@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'index.html';
     }
 
- 
+    
     async function fetchAndDisplayProducts() {
         try {
             const response = await fetch('http://localhost:3000/products');
@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${product.id}</td>
                         <td>${product.name}</td>
                         <td>$${product.price.toFixed(2)}</td>
+                        <td>${product.stock_quantity}</td>
                         <td>
+                            <button class="increase-stock-btn" data-id="${product.id}">+ Stock</button> 
                             <button class="edit-btn" data-id="${product.id}">Edit</button>
                             <button class="delete-btn" data-id="${product.id}">Delete</button>
                         </td>
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // FIX APPLIED HERE: Added event listener for '.increase-stock-btn'
     function attachEventListeners() {
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', async (event) => {
@@ -68,7 +71,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         });
-        // You can add event listeners for the 'Edit' button here
+        
+        // NEW: Attach listener for the increase stock buttons
+        document.querySelectorAll('.increase-stock-btn').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const productId = event.target.dataset.id;
+                await increaseProductStock(productId);
+            });
+        });
     }
 
     async function addProduct(productData) {
@@ -118,14 +128,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    async function increaseProductStock(productId) {
+    // Prompt admin for the quantity to add
+    const amountToAdd = prompt("Enter the quantity to add to stock:");
+
+    if (amountToAdd === null || isNaN(parseInt(amountToAdd)) || parseInt(amountToAdd) <= 0) {
+        if (amountToAdd !== null) {
+            alert('Please enter a valid positive number.');
+        }
+        return;
+    }
+
+    const userId = localStorage.getItem('userId');
+    const increaseData = { 
+        userId: userId,
+        increaseAmount: parseInt(amountToAdd)
+    };
+
+    try {
+        const response = await fetch(`http://localhost:3000/products/increase-stock/${productId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(increaseData)
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+            fetchAndDisplayProducts(); // Refresh the product list
+        } else {
+            throw new Error(result.message || 'Failed to increase stock.');
+        }
+    } catch (error) {
+        console.error('Error increasing stock:', error);
+        alert(`Error: ${error.message}`);
+    }
+}
+
     // Event listener for the "Add Product" form
     addProductForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const productData = {
             name: document.getElementById('name').value,
             price: parseFloat(document.getElementById('price').value),
+            stock_quantity: parseInt(document.getElementById('stock_quantity').value),
             image_url: document.getElementById('image_url').value,
+            // You are missing the 'category' field here, you should add it back to the form data
+            // category: document.getElementById('category').value 
         };
         addProduct(productData);
     });
+
+    
 });

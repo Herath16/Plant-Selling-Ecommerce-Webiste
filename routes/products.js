@@ -18,10 +18,10 @@ router.get('/', (req, res) => {
 
 // POST /products/add (Admin-only)
 router.post('/add', isAdmin, (req, res) => {
-    const { name, price, image_url} = req.body;
-    const query = 'INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)';
+    const { name, price, stock_quantity, image_url} = req.body;
+    const query = 'INSERT INTO products (name, price, stock_quantity, image_url) VALUES (?, ?, ?, ?)';
     
-    db.query(query, [name, price, image_url], (err, result) => {
+    db.query(query, [name, price, stock_quantity, image_url], (err, result) => {
         if (err) {
             console.error('Error adding product:', err);
             return res.status(500).send('Server error');
@@ -33,10 +33,10 @@ router.post('/add', isAdmin, (req, res) => {
 // PUT /products/update/:id (Admin-only)
 router.put('/update/:id', isAdmin, (req, res) => {
     const { id } = req.params;
-    const { name, price, image_url} = req.body;
-    const query = 'UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?';
+    const { name, price, stock_quantity, image_url} = req.body;
+    const query = 'UPDATE products SET name = ?, price = ?, stock_quantity = ? image_url = ? WHERE id = ?';
     
-    db.query(query, [name, price, image_url, id], (err, result) => {
+    db.query(query, [name, price, stock_quantity, image_url, id], (err, result) => {
         if (err) {
             console.error('Error updating product:', err);
             return res.status(500).send('Server error');
@@ -62,6 +62,35 @@ router.delete('/delete/:id', isAdmin, (req, res) => {
             return res.status(404).json({ message: 'Product not found.' });
         }
         res.status(200).json({ message: 'Product deleted successfully.' });
+    });
+});
+
+// PUT /products/increase-stock/:id (Admin-only)
+// This route increases the stock_quantity by the specified amount
+router.put('/increase-stock/:id', isAdmin, (req, res) => {
+    const productId = req.params.id;
+    // Get the amount to increase by (e.g., 5, 10, etc.)
+    const { increaseAmount, userId } = req.body; 
+
+    // Basic validation
+    if (!increaseAmount || isNaN(parseInt(increaseAmount))) {
+        return res.status(400).json({ message: 'Invalid increase amount.' });
+    }
+
+    const amount = parseInt(increaseAmount);
+
+    // SQL to update and increase the stock_quantity
+    const query = 'UPDATE products SET stock_quantity = stock_quantity + ? WHERE id = ?';
+
+    db.query(query, [amount, productId], (err, result) => {
+        if (err) {
+            console.error('Error increasing stock:', err);
+            return res.status(500).send('Server error');
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Product not found.' });
+        }
+        res.status(200).json({ message: `Stock for product ID ${productId} increased by ${amount}.` });
     });
 });
 
