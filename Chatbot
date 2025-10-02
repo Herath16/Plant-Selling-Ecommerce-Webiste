@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Shop Chatbot 🌿</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    /* 🌿 Background with image + gradient overlay */
+    body {
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)),
+                  url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Floating decorative leaves */
+    .leaf {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      animation: float 12s linear infinite;
+    }
+
+    .leaf:nth-child(1) { left: 10%; animation-duration: 14s; }
+    .leaf:nth-child(2) { left: 30%; animation-duration: 18s; width: 18px; height: 18px; }
+    .leaf:nth-child(3) { left: 60%; animation-duration: 16s; }
+    .leaf:nth-child(4) { left: 80%; animation-duration: 20s; width: 30px; height: 30px; }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0.8); opacity: 0.4; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Chat Container (Glassmorphism effect) */
+    .chat-container {
+      width: 400px;
+      max-width: 90%;
+      height: 600px;
+      background: rgba(255, 255, 255, 0.7); /* semi-transparent */
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      backdrop-filter: blur(10px); /* glass effect */
+      animation: fadeIn 1s ease;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .chat-header {
+      background: linear-gradient(90deg, #4caf50, #81c784);
+      color: white;
+      padding: 14px;
+      text-align: center;
+      font-size: 18px;
+      position: relative;
+      font-weight: bold;
+    }
+
+    .chat-header button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: white;
+      color: #4caf50;
+      border: none;
+      border-radius: 50%;
+      padding: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .chat-header button:hover {
+      background: #f1f1f1;
+      transform: rotate(20deg);
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      background: transparent;
+    }
+
+    .message {
+      margin: 8px 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 75%;
+      clear: both;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user {
+      background: #4caf50;
+      color: white;
+      float: right;
+      border-bottom-right-radius: 2px;
+    }
+
+    .bot {
+      background: #e0e0e0;
+      float: left;
+      border-bottom-left-radius: 2px;
+    }
+
+    .typing {
+      font-style: italic;
+      opacity: 0.6;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.4);
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.6);
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: transparent;
+    }
+
+    .chat-input button {
+      padding: 12px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .chat-input button:hover {
+      background: #43a047;
+    }
+
+    /* Quick Replies */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    .quick-replies button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .quick-replies button:hover {
+      background: #388e3c;
+      transform: scale(1.05);
+    }
+
+    /* Dark mode */
+    body.dark-mode {
+      background: #111 url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80") center/cover no-repeat;
+    }
+    body.dark-mode .chat-container {
+      background: rgba(43, 43, 43, 0.85);
+      color: #eee;
+    }
+    body.dark-mode .chat-body {
+      background: transparent;
+    }
+    body.dark-mode .bot {
+      background: #555;
+      color: #eee;
+    }
+    body.dark-mode .quick-replies {
+      background: rgba(43,43,43,0.85);
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating decorative leaves -->
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      🌿 GreenLeaf Bot
+      <button onclick="toggleDarkMode()">🌙</button>
+    </div>
+    <div class="chat-body" id="chat-body"></div>
+    <div id="quick-replies" class="quick-replies"></div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBody = document.getElementById("chat-body");
+    const quickRepliesContainer = document.getElementById("quick-replies");
+
+    function appendMessage(sender, text, typing = false) {
+      const msgDiv = document.createElement("div");
+      msgDiv.classList.add("message", sender);
+      if (typing) msgDiv.classList.add("typing");
+      msgDiv.innerText = text;
+      chatBody.appendChild(msgDiv);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return msgDiv;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("user-input");
+      const text = input.value.trim();
+      if (text === "") return;
+      userMessage(text);
+      input.value = "";
+    }
+
+    function userMessage(text) {
+      appendMessage("user", text);
+      setTimeout(() => {
+        const typingIndicator = appendMessage("bot", "…", true);
+        setTimeout(() => {
+          typingIndicator.remove();
+          const reply = getBotReply(text);
+          botReply(reply);
+        }, 1000);
+      }, 500);
+    }
+
+    function botReply(message) {
+      appendMessage("bot", message.text);
+      quickRepliesContainer.innerHTML = "";
+      if (message.quickReplies) {
+        message.quickReplies.forEach(reply => {
+          const button = document.createElement("button");
+          button.innerText = reply;
+          button.onclick = () => {
+            userMessage(reply);
+            quickRepliesContainer.innerHTML = "";
+          };
+          quickRepliesContainer.appendChild(button);
+        });
+      }
+    }
+
+    function getBotReply(msg) {
+      msg = msg.toLowerCase();
+
+      if (msg.includes("hello") || msg.includes("hi")) {
+        return { text: "Hello 🌱! Welcome to GreenLeaf Plants. How can I help you today?", quickReplies: ["Show me plants", "Business hours", "Contact info"] };
+      }
+
+      if (msg.includes("plants")) {
+        return { text: "Here are some plants 🌿:\n\n1. Aloe Vera ($10)\n2. Snake Plant ($12)\n3. Rose Bush ($15)\n4. Sunflower ($18)", quickReplies: ["Aloe Vera", "Snake Plant", "Rose Bush", "Sunflower"] };
+      }
+
+      return { text: "Hmm 🤔 I didn’t quite catch that. Try asking about Aloe Vera, Snake Plant, Rose Bush, or Sunflower 🌿", quickReplies: ["Show me plants", "Business hours", "Contact info"] };
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    window.onload = () => {
+      botReply({
+        text: "Hello 🌱! I'm your GreenLeaf assistant. How can I help you today?",
+        quickReplies: ["Show me plants", "Business hours", "Contact info"]
+      });
+    };
+  </script>
+</body>
+</html>
