@@ -42,6 +42,10 @@ app.use('/cart', cartRouter);
 const { router: authRouter, isAdmin } = require('./routes/auth');
 app.use('/auth', authRouter);
 
+// Modular route: /favorites
+const favoritesRouter = require('./routes/favorites');
+app.use('/favorites', favoritesRouter);
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).send('404: Page not found');

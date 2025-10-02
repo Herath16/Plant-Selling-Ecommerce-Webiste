@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
 
-    // A hardcoded user ID for demonstration. In a real app, this would come from a user session.
-    //const userId = 11;
-
     // Get userId from localStorage
     const userId = localStorage.getItem('userId');
 
