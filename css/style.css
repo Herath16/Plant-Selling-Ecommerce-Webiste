@@ -501,7 +501,7 @@ html {
 
 
 /*product*/
-
+/*
 .product .box-container {
     display: flex;
     flex-wrap: wrap;
@@ -610,7 +610,147 @@ html {
     display: block;
     margin: 2rem;
 }
+*/
 
+/*product*/
+
+.product .box-container {
+    /* --- MODIFIED: Use CSS Grid for flexible, equal columns --- */
+    display: grid;
+    /* Create columns that are at least 28rem wide, and let them fill the container evenly */
+    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); 
+    gap: 2rem; /* Consistent space between boxes */
+    /* --- END MODIFIED --- */
+}
+
+.product .box-container .box {
+    /* --- MODIFIED: Use Flexbox to control content alignment and enforce height --- */
+    /* Define the box as a flexible container */
+    display: flex;
+    /* Stack content vertically */
+    flex-direction: column; 
+    /* Set a fixed height for visual uniformity */
+    min-height: 50rem; 
+    height: 100%; 
+    /* --- END MODIFIED --- */
+    
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .3);
+    border: .05rem solid gray;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.product .box-container .box img {
+    /* --- MODIFIED: Fix image size and use contain to prevent stretching --- */
+    height: 25rem; /* Reduced height to fit a 50rem box better */
+    width: 100%;
+    border-bottom: .05rem solid gray;
+    /* Ensures the entire image is visible, even if it leaves some empty space */
+    object-fit: contain; 
+    /* --- END MODIFIED --- */
+}
+
+/* ... (Keep .discount and .icons styles as they are) ... */
+
+/* Keep .product .box-container .box .discount */
+.product .box-container .box .discount {
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .3);
+    z-index: 10000;
+    background: rgba(0, 255, 0, 0.1);
+    color: var(--green);
+    font-size: 2.5rem;
+    padding: .5rem 1rem;
+}
+
+/* Keep .product .box-container .box .icons */
+.product .box-container .box .icons {
+    position: absolute;
+    top: -15rem;
+    left: 0;
+    display: flex;
+    flex-flow: column;
+    border-radius: 0 0 5rem 5rem;
+    padding: .5rem;
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .3);
+}
+
+.product .box-container .box:hover .icons {
+    top: 0;
+}
+
+.product .box-container .box .icons a {
+    margin: .1rem;
+    font-size: 2rem;
+    height: 4rem;
+    width: 3.5rem;
+    line-height: 4rem;
+    color: var(--green);
+}
+
+.product .box-container .box .icons a:hover {
+    color: red;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* Keep h3 and stars styles */
+.product .box-container .box h3 {
+    color: #333;
+    font-size: 2.5rem;
+    padding: 1rem 0;
+}
+
+.product .box-container .box .stars i {
+    color: gold;
+    font-size: 2rem;
+}
+
+/* Keep quantity styles */
+.product .box-container .box .quantify {
+    padding: 1rem 0;
+}
+
+.product .box-container .box .quantify span {
+    font-size: 2rem;
+}
+
+.product .box-container .box .quantify input {
+    font-size: 2rem;
+    padding: .5rem;
+    text-align: center;
+    border: .05rem solid gray;
+    background: rgba(0, 0, 0, .1);
+}
+
+/* Keep price styles */
+.product .box-container .box .price {
+    font-weight: bolder;
+    color: var(--green);
+    font-size: 2rem;
+    /* Add padding here to create space */
+    padding-bottom: 1rem; 
+}
+
+.product .box-container .box .price span {
+    text-decoration: line-through;
+    font-size: 1.5rem;
+    color: gray;
+}
+
+.product .box-container .box .btn {
+    /* --- CRITICAL CHANGE: Push the button to the bottom --- */
+    margin-top: auto; 
+    /* --- END CRITICAL CHANGE --- */
+    display: block;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem; /* Give it a little space from the bottom border */
+}
 
 /*icons*/
 
@@ -842,6 +982,18 @@ html {
 .scroll-top:hover {
     background: var(--green);
     color: #fff;
+}
+
+/* style.css (Add to the end) */
+
+/* Default color for the favorite icon (empty heart) */
+.product .box-container .box .icons a.fa-heart {
+    color: var(--green);
+}
+
+/* Style for the active (FILLED) heart icon */
+.product .box-container .box .icons a.fas.fa-heart {
+    color: #ff0000; /* Red color for a filled heart */
 }
 
 
