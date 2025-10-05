@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .admin-container {
+            padding: 2rem;
+        }
+        .admin-container h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--green);
+        }
+        .order-list-container {
+            background: #f4f4f4;
+            padding: 2rem;
+            border-radius: .5rem;
+            margin-bottom: 2rem;
+        }
+        .order-list-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-list-container th, .order-list-container td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: .1rem solid #ddd;
+        }
+        .order-list-container th {
+            background: var(--green);
+            color: white;
+        }
+        .order-list-container select {
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            border: 1px solid #ccc;
+        }
+        .order-list-container .status-processing { color: orange; font-weight: bold; }
+        .order-list-container .status-shipped { color: blue; font-weight: bold; }
+        .order-list-container .status-delivered { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header class="header-3">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i>CHO<span>CO</span>-CHO<span>CO</span></a>
+        <nav class="nav-bar">
+            <a href="admin.html">Dashboard</a>
+            <a href="index.html">View Store</a>
+        </nav>
+        <div class="icons">
+            <a href="#" class="fas fa-sign-out-alt" id="logout-btn"></a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <h1>Manage Customer Orders</h1>
+
+        <div class="order-list-container">
+            <h2>Recent Orders</h2>
+            <table id="order-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="order-list-body">
+                    <tr><td colspan="7">Loading orders...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="./js/admin_orders.js"></script>
+    <script>
+        // Simple logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('userId');
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>

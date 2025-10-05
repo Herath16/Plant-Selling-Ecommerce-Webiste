@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Authentication successful
-        res.status(200).json({ message: 'Logged in successfully!', userId: user.id });
+        res.status(200).json({ message: 'Logged in successfully!', userId: user.id, userRole: user.role });
     });
 });
 

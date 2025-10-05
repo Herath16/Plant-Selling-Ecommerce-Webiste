@@ -24,8 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     // Store the userId to use for cart operations
                     localStorage.setItem('userId', result.userId);
-                    // Redirect to the homepage or cart page
-                    window.location.href = 'index.html'; 
+                    localStorage.setItem('userRole', result.userRole);
+                    // Redirect based on role
+                    if (result.userRole === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
                 } else {
                     alert(result.message);
                 }
