@@ -148,10 +148,14 @@ router.delete('/remove', (req, res) => {
 
 // 🛒 NEW: POST /cart/checkout - Finalizes the order and clears the cart using a transaction
 router.post('/checkout', (req, res) => {
-    const { userId } = req.body;
+    const { userId, shippingAddressId } = req.body; 
 
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required for checkout.' });
+    }
+
+    if (!shippingAddressId) {
+        return res.status(400).json({ message: 'Shipping address ID is required to complete the order.' });
     }
 
     // Start a transaction
@@ -174,11 +178,13 @@ router.post('/checkout', (req, res) => {
             const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
             // 2. Insert into orders table
-            const insertOrderQuery = 'INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)';
+            const insertOrderQuery = 'INSERT INTO orders (user_id, total_amount, status, shipping_address_id) VALUES (?, ?, ?, ?)';
 
-            db.query(insertOrderQuery, [userId, totalAmount.toFixed(2), 'Completed'], (err, orderResult) => {
-                if (err) return db.rollback(() => res.status(500).send('Error creating order.'));
-
+            db.query(insertOrderQuery, [userId, totalAmount.toFixed(2), 'Completed', shippingAddressId], (err, orderResult) => {
+                if (err) {
+                    console.error('Error creating order, possibly missing address FK:', err);
+                    return db.rollback(() => res.status(500).json({ message: 'Error creating order, verify address ID.' }));
+                }
                 const orderId = orderResult.insertId;
 
                 // 3. Insert into order_items table

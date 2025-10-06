@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderListBody = document.getElementById('order-list-body');
     const userId = localStorage.getItem('userId');
     const userRole = localStorage.getItem('userRole'); // Assuming you save role upon login
-    alert(userRole);
 
     // Basic admin check - redirect if not admin
     if (!userId || userRole != 'admin') {

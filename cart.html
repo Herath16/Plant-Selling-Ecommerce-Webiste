@@ -28,9 +28,52 @@
     </header>
     <div class="cart-container">
         <h1>Your Shopping Cart</h1>
-        <div class="cart-items" id="cart-items">
-            
+        <div class="cart-items" id="cart-items"></div>
+
+        <div class="cart-address-selection">
+            <h2>Delivery Address</h2>
+            <div id="address-list">
+                <p>Loading addresses...</p>
+            </div>
+            <a href="#" id="add-new-address-btn" style="color: var(--green); margin-top: 1rem; display: block;">+ Add New Address</a>
         </div>
+
+        <div id="add-address-form-container" style="display:none; padding: 20px; border: 1px solid #ccc; border-radius: 5px; margin-top: 20px;">
+            <h2>Add a New Shipping Address</h2>
+            <form id="new-address-form">
+                <div style="margin-bottom: 10px;">
+                    <label for="addressLine1">Address Line 1*:</label>
+                    <input type="text" id="addressLine1" name="addressLine1" required style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="addressLine2">Address Line 2 (Optional):</label>
+                    <input type="text" id="addressLine2" name="addressLine2" style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="city">City*:</label>
+                    <input type="text" id="city" name="city" required style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="stateProvince">State/Province:</label>
+                    <input type="text" id="stateProvince" name="stateProvince" style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="zipCode">Zip/Postal Code*:</label>
+                    <input type="text" id="zipCode" name="zipCode" required style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" value="Sri Lanka" style="width: 100%; padding: 8px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="checkbox" id="isDefault" name="isDefault">
+                    <label for="isDefault">Set as default address</label>
+                </div>
+                <button type="submit" class="btn" style="background-color: var(--green); color: white;">Save Address</button>
+                <button type="button" id="cancel-address-btn" class="btn" style="background-color: #ccc; color: black; margin-left: 10px;">Cancel</button>
+            </form>
+        </div>
+
 
         <div class="cart-summary">
             <div class="total-price">
@@ -77,6 +120,7 @@
         </div>
         <h1 class="credit"> created by <span> PV </span> | all rights reserved! </h1>
     </section>
+
     <script src="js/cart.js"></script>
     </body>
 </html>
