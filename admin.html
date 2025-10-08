@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .admin-container {
+            padding: 2rem;
+        }
+        .admin-container h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--green);
+        }
+        .product-form, .product-list-container {
+            background: #f4f4f4;
+            padding: 2rem;
+            border-radius: .5rem;
+            margin-bottom: 2rem;
+        }
+        .product-form .box {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: .1rem solid rgba(0, 0, 0, .1);
+            font-size: 1.5rem;
+        }
+        .product-list-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .product-list-container th, .product-list-container td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: .1rem solid #ddd;
+        }
+        .product-list-container th {
+            background: var(--green);
+            color: white;
+        }
+        .product-list-container button {
+            margin-right: .5rem;
+            padding: .5rem 1rem;
+            border: none;
+            cursor: pointer;
+            border-radius: .3rem;
+            color: white;
+        }
+        .product-list-container .edit-btn { background: #337ab7; }
+        .product-list-container .delete-btn { background: #d9534f; }
+    </style>
+</head>
+<body>
+    <header class="header-3">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i>CHO<span>CO</span>-CHO<span>CO</span></a>
+        <nav class="nav-bar">
+            <a href="index.html">Home</a>
+            <a href="index.html#Category">Category</a>
+            <a href="index.html#Product">Product</a>
+            <a href="index.html#Deal">Deal</a>
+            <a href="index.html#Contact">Contact</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+        <div class="icons">
+            <a href="#" class="fas fa-sign-out-alt" id="logout-btn"></a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <h1>Admin Dashboard</h1>
+
+        <div class="product-form">
+            <h2>Add New Product</h2>
+            <form id="add-product-form">
+                <input type="text" id="name" class="box" placeholder="Product Name" required>
+                <input type="number" id="price" class="box" placeholder="Price" step="0.01" required>
+                <input type="number" id="stock_quantity" class="box" placeholder="stock_quantity" min="0" required>
+                <input type="text" id="image_url" class="box" placeholder="Image URL" required>
+                <button type="submit" class="btn">Add Product</button>
+            </form>
+        </div>
+
+        <div class="product-list-container">
+            <h2>Current Products</h2>
+            <table id="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="./js/admin.js"></script>
+    <script>
+        // Simple logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('userId');
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>
