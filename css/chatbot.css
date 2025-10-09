@@ -1,0 +1,114 @@
+/* ========================
+   1. Positioning Wrapper
+   ======================== */
+.chatbot-wrapper {
+    /* Fixed position is key for bottom-right corner */
+    position: fixed; 
+    bottom: 30px;    /* Increased distance from bottom */
+    right: 30px;     /* Increased distance from right */
+    z-index: 1000;   /* Ensure it stays on top */
+    
+    /* Used to stack the button and chat window on top of each other */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+}
+
+/* ========================
+   2. Button Styling (Made Bigger)
+   ======================== */
+.chatbot-toggle-btn {
+    /* Significantly increased size */
+    width: 70px;
+    height: 70px;
+    font-size: 32px; /* Bigger icon */
+
+    /* Basic styling for appearance */
+    background-color: #5cb85c; /* Or your preferred brand color */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Clearer shadow */
+    transition: transform 0.2s;
+    
+    margin-bottom: 20px; /* Space between the button and the chat window */
+}
+
+.chatbot-toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ========================
+   3. Chat Window (General)
+   ======================== */
+.chat-container {
+    width: 320px; /* Slightly wider chat window */
+    height: 450px; /* Slightly taller chat window */
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Add necessary styles for header, body, input, etc. below this */
+
+.chat-header {
+    background-color: #5cb85c;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-controls .control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f4f4f4;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.chat-input .send-btn {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+/* Style for quick replies if needed */
+.quick-replies {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    border-top: 1px solid #eee;
+}
