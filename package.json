@@ -4,5 +4,24 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql": "^2.18.1"
-  }
+  },
+  "name": "plant-selling-ecommerce-webiste",
+  "version": "1.0.0",
+  "description": "Create a complete responsive online ecommerce website design for beginers using html css and vanilla javascript step by step.",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Herath16/Plant-Selling-Ecommerce-Webiste.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Herath16/Plant-Selling-Ecommerce-Webiste/issues"
+  },
+  "homepage": "https://github.com/Herath16/Plant-Selling-Ecommerce-Webiste#readme"
 }

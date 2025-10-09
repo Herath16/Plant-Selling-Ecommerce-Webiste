@@ -46,6 +46,12 @@ app.use('/auth', authRouter);
 const favoritesRouter = require('./routes/favorites');
 app.use('/favorites', favoritesRouter);
 
+
+// Modular route: /reviews
+const reviewsRouter = require('./routes/reviews');
+app.use('/reviews', reviewsRouter); 
+
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).send('404: Page not found');

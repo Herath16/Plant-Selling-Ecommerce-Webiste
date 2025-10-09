@@ -5,7 +5,7 @@ const { isAdmin } = require('./auth');
 
 // GET /products
 router.get('/', (req, res) => {
-  db.query('SELECT * FROM products', (err, results) => {
+  db.query('SELECT id, name, price, stock_quantity, imege_url as image_url FROM products', (err, results) => {
     if (err) {
       console.error('Error fetching products:', err);
       res.status(500).send('Server error');
@@ -18,10 +18,10 @@ router.get('/', (req, res) => {
 
 // POST /products/add (Admin-only)
 router.post('/add', isAdmin, (req, res) => {
-    const { name, price, stock_quantity, image_url} = req.body;
-    const query = 'INSERT INTO products (name, price, stock_quantity, image_url) VALUES (?, ?, ?, ?)';
-    
-    db.query(query, [name, price, stock_quantity, image_url], (err, result) => {
+    const { name, price, stock_quantity, imege_url} = req.body;
+    const query = 'INSERT INTO products (name, price, stock_quantity, imege_url) VALUES (?, ?, ?, ?)';
+
+    db.query(query, [name, price, stock_quantity, imege_url], (err, result) => {
         if (err) {
             console.error('Error adding product:', err);
             return res.status(500).send('Server error');
@@ -33,10 +33,10 @@ router.post('/add', isAdmin, (req, res) => {
 // PUT /products/update/:id (Admin-only)
 router.put('/update/:id', isAdmin, (req, res) => {
     const { id } = req.params;
-    const { name, price, stock_quantity, image_url} = req.body;
-    const query = 'UPDATE products SET name = ?, price = ?, stock_quantity = ? image_url = ? WHERE id = ?';
-    
-    db.query(query, [name, price, stock_quantity, image_url, id], (err, result) => {
+    const { name, price, stock_quantity, imege_url} = req.body;
+    const query = 'UPDATE products SET name = ?, price = ?, stock_quantity = ?, imege_url = ? WHERE id = ?';
+
+    db.query(query, [name, price, stock_quantity, imege_url, id], (err, result) => {
         if (err) {
             console.error('Error updating product:', err);
             return res.status(500).send('Server error');
@@ -45,6 +45,21 @@ router.put('/update/:id', isAdmin, (req, res) => {
             return res.status(404).json({ message: 'Product not found.' });
         }
         res.status(200).json({ message: 'Product updated successfully.' });
+    });
+});
+
+// NEW: GET /products/:id - Fetch a single product by ID
+router.get('/:id', (req, res) => {
+    const productId = req.params.id;
+    db.query('SELECT id, name, price, stock_quantity, imege_url as image_url FROM products WHERE id = ?', [productId], (err, results) => {
+        if (err) {
+            console.error('Error fetching single product:', err);
+            return res.status(500).send('Server error');
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Product not found.' });
+        }
+        res.json(results[0]);
     });
 });
 

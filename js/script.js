@@ -154,7 +154,7 @@ function displayProducts(products) {
             <a href="#" class="fas fa-share"></a>
             <a href="#" class="fas fa-eye"></a>
             </div>
-            <img src="${product.image_url}" alt="${product.name}">
+            <img src="images/${product.image_url}" alt="${product.name}">
             <h3>${product.name}</h3>
             <div class="stars">
             <i class="fas fa-star"></i>
