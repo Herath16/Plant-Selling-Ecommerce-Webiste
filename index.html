@@ -8,6 +8,244 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+    <style>
+        /* CHATBOT CORE STYLES */
+        
+        /* 1. Chatbot Wrapper & Button (New Addition for Corner Positioning) */
+        .chatbot-wrapper {
+            position: fixed;
+            bottom: 30px; /* Position from the bottom */
+            right: 30px;  /* Position from the right */
+            z-index: 1000; /* Ensure it's on top of everything */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: "Segoe UI", sans-serif; /* Added font reset */
+        }
+
+        .chatbot-toggle-btn {
+            /* Button Styling */
+            width: 60px; 
+            height: 60px;
+            font-size: 28px;
+            background-color: #43a047; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, background-color 0.3s;
+            line-height: 60px; 
+            text-align: center;
+        }
+
+        .chatbot-toggle-btn:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+
+        /* Hide the button when chat is open */
+        .chat-open .chatbot-toggle-btn {
+            display: none;
+        }
+
+        /* 2. Chat Window (Compact Size) */
+        .chat-container {
+            width: 350px; 
+            height: 450px; 
+            
+            background: #ffffff; 
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            
+            /* Hidden by default, toggled by JS */
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.3s ease-in-out;
+            pointer-events: none; /* Block clicks when hidden */
+            margin-bottom: 10px; /* Space between chat and bottom button location */
+        }
+        
+        /* Show chat container */
+        .chat-open .chat-container {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto; /* Enable clicks when visible */
+        }
+        
+        /* 3. Chat Header */
+        .chat-header {
+            background: linear-gradient(90deg, #43a047, #81c784);
+            color: white;
+            padding: 15px;
+            font-size: 18px; 
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .chat-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px; 
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px;
+        }
+        
+        .chat-header .close-btn {
+            font-size: 24px;
+        }
+
+        .chat-header button:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        /* 4. Messages and Body */
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f7f7f7;
+        }
+
+        .message {
+            margin: 8px 0;
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 80%; 
+            clear: both;
+            line-height: 1.3;
+            font-size: 14px;
+        }
+
+        .user {
+            background: #43a047;
+            color: white;
+            float: right;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot {
+            background: #e0e0e0;
+            float: left;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing {
+            font-style: italic;
+            opacity: 0.6;
+            background: #f0f0f0;
+        }
+
+        /* 5. Input Area */
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+            background: white;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+        }
+
+        .chat-input button {
+            padding: 12px 18px;
+            background: #43a047;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .chat-input button:hover {
+            background: #2e7d32;
+        }
+
+        /* 6. Quick Replies */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px 15px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        .quick-replies button {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 18px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-replies button:hover {
+            background: #43a047;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* 7. DARK MODE ADJUSTMENTS */
+        /* Assuming your main page doesn't use dark mode, these are for the chatbot UI only */
+        body.dark-mode .chat-container {
+            background: #333;
+            color: #eee;
+            box-shadow: 0 0 25px rgba(0,0,0,0.8);
+        }
+        
+        body.dark-mode .chat-body {
+            background: #222;
+        }
+
+        body.dark-mode .chat-header {
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+        }
+
+        body.dark-mode .bot {
+            background: #555;
+            color: #eee;
+        }
+
+        body.dark-mode .chat-input {
+            background: #444;
+            border-top: 1px solid #555;
+        }
+
+        body.dark-mode .quick-replies {
+            background: #444;
+            border-top: 1px solid #555;
+        }
+
+        body.dark-mode .chat-input input {
+            color: #fff;
+        }
+        
+        body.dark-mode .quick-replies button {
+            background: #555;
+            color: #eee;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -323,12 +561,197 @@
 
     </section>
 
+
     <!-- footer section ends -->
     <!-- scroll top button  -->
     <a href="#Home" class="scroll-top fas fa-angle-up"></a>
 
+    
+    <div class="chatbot-wrapper" id="chatbot-wrapper">
+        <button class="chatbot-toggle-btn fas fa-comment-dots" id="toggle-btn" title="Open Chat" onclick="toggleChat()"></button>
+
+        <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+                <span class="header-title">🌿 GreenLeaf Bot</span>
+                <div>
+                    <button onclick="toggleDarkMode()">🌙</button>
+                    <button onclick="toggleChat()" class="close-btn" title="Close Chat">✕</button>
+                </div>
+            </div>
+            <div class="chat-body" id="chat-body"></div>
+            <div id="quick-replies" class="quick-replies"></div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="./js/script.js"></script>
+    <script>
+        const chatBody = document.getElementById("chat-body");
+        const quickRepliesContainer = document.getElementById("quick-replies");
+        const chatWrapper = document.getElementById("chatbot-wrapper");
+
+        /* Toggle Chat Functionality */
+        function toggleChat() {
+            chatWrapper.classList.toggle("chat-open");
+            if (chatWrapper.classList.contains("chat-open")) {
+                 // Initialize welcome message if chat body is empty
+                 if (chatBody.children.length === 0) {
+                    initWelcomeMessage();
+                 }
+                 document.getElementById("user-input").focus();
+            }
+        }
+
+        function initWelcomeMessage() {
+            botReply({
+                text: "Hello 🌱! I'm your GreenLeaf assistant. How can I help you today?",
+                quickReplies: ["Show me plants", "Business hours", "Contact info"]
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+             // Ensure chat is closed on load
+             chatWrapper.classList.remove("chat-open");
+        });
+
+
+        /* Message & Reply Logic (from original code) */
+
+        function appendMessage(sender, text, typing = false) {
+            const msgDiv = document.createElement("div");
+            msgDiv.classList.add("message", sender);
+            if (typing) msgDiv.classList.add("typing");
+            msgDiv.innerText = text;
+            chatBody.appendChild(msgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return msgDiv;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("user-input");
+            const text = input.value.trim();
+            if (text === "") return;
+            userMessage(text);
+            input.value = "";
+        }
+
+        function userMessage(text) {
+            appendMessage("user", text);
+            setTimeout(() => {
+                const typingIndicator = appendMessage("bot", "…", true);
+                setTimeout(() => {
+                    typingIndicator.remove();
+                    getBotReply(text);
+                }, 1000);
+            }, 500);
+        }
+
+        function botReply(message) {
+            appendMessage("bot", message.text);
+            quickRepliesContainer.innerHTML = "";
+            if (message.quickReplies) {
+                message.quickReplies.forEach(reply => {
+                    const button = document.createElement("button");
+                    button.innerText = reply;
+                    button.onclick = () => {
+                        userMessage(reply);
+                        quickRepliesContainer.innerHTML = "";
+                    };
+                    quickRepliesContainer.appendChild(button);
+                });
+            }
+        }
+
+        function getBotReply(msg) {
+            msg = msg.toLowerCase();
+
+            // Greetings
+            if (msg.includes("hello") || msg.includes("hi")) {
+                botReply({
+                    text: "Hello 🌱! Welcome to GreenLeaf Plants. How can I help you today?",
+                    quickReplies: ["Show me plants", "Business hours", "Contact info"]
+                });
+                return;
+            }
+
+            // Business hours
+            if (msg.includes("business") || msg.includes("hour")) {
+                botReply({
+                    text: "🕒 Our business hours are from 8.00 A.M to 9.00 P.M every day.",
+                    quickReplies: ["Show me plants", "Contact info"]
+                });
+                return;
+            }
+
+            // Contact info
+            if (msg.includes("contact") || msg.includes("phone") || msg.includes("number")) {
+                botReply({
+                    text: "📞 You can reach us at: 0763176007 🌿",
+                    quickReplies: ["Show me plants", "Business hours"]
+                });
+                return;
+            }
+            
+            if (msg.includes("thanks") || msg.includes("thankyou")) {
+                botReply({
+                text: "Have a nice day 😊",
+                quickReplies: ["Show me plants", "Business hours", "Contact info"]
+                });
+                return;
+            }
+
+
+            // Fallback for plant list/details (Requires local server to work)
+            if (msg.includes("plants")) {
+                botReply({ text: "Fetching plants from our garden... 🌿" });
+                fetch("http://localhost:3000/plants")
+                    .then(res => res.json())
+                    .then(data => {
+                        let list = data.map(p => `${p.name} ($${p.price})`).join("\n");
+                        botReply({
+                            text: `Here are some plants 🌿:\n\n${list}`,
+                            quickReplies: data.map(p => p.name)
+                        });
+                    })
+                    .catch(() => botReply({ text: "⚠️ Unable to connect to database server. (Check localhost:3000)" }));
+                return;
+            }
+
+            // Fetch individual plant details
+            fetch(`http://localhost:3000/plants/${encodeURIComponent(msg)}`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Not found");
+                    return res.json();
+                })
+                .then(p => {
+                    botReply({
+                        text: `${p.name} 🌿\n${p.description}\n💰 Price: $${p.price}\n💧 Care: ${p.care}`,
+                        quickReplies: ["Show me plants", "Contact info"]
+                    });
+                })
+                .catch(() => {
+                    botReply({
+                        text: "Hmm 🤔 I didn’t quite catch that. Try asking about Aloe Vera, Snake Plant, Rose Bush, or Sunflower 🌿",
+                        quickReplies: ["Show me plants", "Business hours", "Contact info"]
+                    });
+                });
+        }
+        
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
 
 </body>
 
