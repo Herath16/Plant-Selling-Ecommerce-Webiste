@@ -65,6 +65,12 @@ if (navbars) {
         //cart.classList.remove('active');
     }
 }
+    /*
+    barmenu.addEventListener('click',()=>{
+        navbars.classList.toggle('fa-times');
+        barmenu.classList.toggle('active');
+    }) jdndjn
+    */
 
 // Check for the user login elements before adding the event listener
 if (document.querySelector('#login-btn')) {
