@@ -1,0 +1,5 @@
+.hintrc
+.vs/
+.vscode/
+node_modules/
+hash.js
