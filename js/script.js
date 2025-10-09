@@ -64,7 +64,13 @@ if (navbars) {
         barmenu.classList.toggle('active');
         //cart.classList.remove('active');
     }
-}
+const barmenu = document.querySelector('#menu-bar');
+const navbars = document.querySelector('.nav-bar');
+
+barmenu.addEventListener('click', () => {
+    navbars.classList.toggle('fa-times');
+    barmenu.classList.toggle('active');
+});
 
 // Check for the user login elements before adding the event listener
 if (document.querySelector('#login-btn')) {
