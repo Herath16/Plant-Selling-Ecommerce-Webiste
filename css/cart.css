@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #001a17, #000);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  background:linear-gradient(90deg,#002d26,#005c4a);
+  box-shadow:0 4px 20px rgba(0,255,204,0.3);
+}
+header h1 {
+  font-size:1.8rem;
+  color:#00ffcc;
+  text-shadow:0 0 15px #00ffcc;
+}
+
+.cart-icon {
+  position:relative;
+  font-size:1.8rem;
+  cursor:pointer;
+  transition:.3s;
+  color:#00ffcc;
+}
+.cart-icon:hover {
+  transform:scale(1.2);
+  color:#00ffaa;
+}
+#cart-count {
+  position:absolute;
+  top:-8px;
+  right:-12px;
+  background:#ff0077;
+  color:#fff;
+  font-size:.7rem;
+  padding:3px 6px;
+  border-radius:50%;
+  box-shadow:0 0 10px #ff0077;
+}
+
+/* Shop Section */
+.shop-section {
+  padding:60px 50px;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.shop-section h2 {
+  margin-bottom:25px;
+  color:#00ffcc;
+  font-size:2.3rem;
+  text-shadow:0 0 20px #00ffaa;
+}
+
+.shop-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:35px;
+}
+
+.card {
+  background:rgba(0,40,35,0.7);
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 15px rgba(0,255,204,0.2);
+  cursor:pointer;
+  transition:transform .4s,box-shadow .4s;
+}
+.card:hover {
+  transform:translateY(-10px) scale(1.05);
+  box-shadow:0 0 25px rgba(0,255,204,0.7);
+}
+.card img {
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  transition:transform 0.5s;
+}
+.card h3 {
+  margin:10px 0;
+  color:#00ffcc;
+}
+.card p {
+  color:#ccc;
+  font-size:1rem;
+}
+.price {
+  color:#00ffaa;
+  font-weight:600;
+  text-shadow:0 0 10px #00ffaa;
+}
+.card button {
+  margin-top:10px;
+  background:#00ffcc;
+  color:#002a26;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
+  box-shadow:0 0 15px #00ffcc;
+}
+.card button:hover {
+  background:#00ffaa;
+  transform:scale(1.05);
+}
+
+/* Cart Page */
+.cart-page-section {
+  padding:40px 50px;
+  background:rgba(0,0,0,0.8);
+  min-height:100vh;
+  position:relative;
+  z-index:2;
+  backdrop-filter:blur(10px);
+}
+.cart-page-section h2 {
+  color:#00ffcc;
+  margin-bottom:25px;
+  text-align:center;
+  text-shadow:0 0 15px #00ffaa;
+}
+.back-to-shop {
+  margin-bottom:25px;
+  padding:8px 15px;
+  background:#00ffcc;
+  color:#002a26;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+}
+.back-to-shop:hover {
+  background:#00ffaa;
+  transform:scale(1.05);
+}
+
+.cart-item {
+  display:flex;
+  align-items:flex-start;
+  margin-bottom:15px;
+  background:rgba(0,255,204,0.05);
+  padding:12px;
+  border-radius:12px;
+  box-shadow:0 0 15px rgba(0,255,204,0.2);
+  transition:0.3s;
+}
+.cart-item:hover {
+  box-shadow:0 0 25px rgba(0,255,204,0.5);
+}
+.cart-item img {
+  width:80px;
+  height:80px;
+  border-radius:8px;
+  margin-right:15px;
+  object-fit:cover;
+}
+.cart-details h4 {
+  margin-bottom:5px;
+  color:#00ffaa;
+}
+.cart-details p {
+  font-size:.9rem;
+  color:#ccc;
+  margin:2px 0;
+}
+.qty-control {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin:5px 0;
+}
+.qty-control button {
+  padding:3px 10px;
+  border:none;
+  background:#00ffcc;
+  color:#002a26;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.3s;
+}
+.qty-control button:hover {
+  background:#00ffaa;
+}
+.cart-total {
+  text-align:right;
+  margin-top:20px;
+  color:#00ffcc;
+  font-weight:600;
+  font-size:1.2rem;
+  text-shadow:0 0 15px #00ffaa;
+}
+
+/* Footer */
+footer {
+  text-align:center;
+  padding:30px;
+  color:#00ffcc;
+  background:linear-gradient(90deg,#003f36,#005c4a);
+  box-shadow:0 -4px 20px rgba(0,255,204,0.2);
+}
+
+/* 3D Scene */
+.three-container {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  overflow:hidden;
+}
+
+.neon-border {
+  border:1px solid rgba(0,255,204,0.3);
+  box-shadow:0 0 10px rgba(0,255,204,0.5);
+}
