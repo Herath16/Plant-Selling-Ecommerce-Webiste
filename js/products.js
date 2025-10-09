@@ -11,21 +11,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('product-list-page');
     if (!container) return; 
 
-    // 2. Fetch all products and display them
-    fetchProductsAndFavorites(); 
+    // NEW: Check the URL for a search query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('query');
 
-    // 3. Attach search listener (using logic from the previous answer)
+    // 2. Fetch all products and display them (or fetch filtered products)
+    fetchProductsAndFavorites(searchQuery); 
+
+    // 3. Attach search listener (This handles submissions from the products.html page itself)
     const searchForm = document.querySelector('.serach-bar-container');
-    const searchInput = document.getElementById('search-bar');
+    
     if (searchForm) {
+        // Reuse the handler defined in script.js, or redefine the logic here.
+        // Since the products.html search should just re-filter the current page,
+        // it's slightly different from the index.html redirection.
+        
         searchForm.addEventListener('submit', (event) => {
-            event.preventDefault(); 
-            const query = searchInput.value.trim();
-            fetchProductsAndFavorites(query); 
-        });
-    }
+             event.preventDefault(); 
+             const searchInput = document.getElementById('search-bar');
+             const query = searchInput.value.trim();
+             
+             // In products.js, we re-fetch directly on the current page
+             fetchProductsAndFavorites(query); 
 
+             // Optional: Update the URL query parameter without reloading
+             if (query) {
+                 history.pushState(null, '', `products.html?query=${encodeURIComponent(query)}`);
+             } else {
+                 history.pushState(null, '', `products.html`);
+             }
+        });
+
+        // If a query was found in the URL on load, set the search bar value
+        if (searchQuery) {
+            const searchInput = document.getElementById('search-bar');
+            if(searchInput) {
+                searchInput.value = searchQuery;
+            }
+        }
+    }
 });
+
 
 // =========================================================================
 // CORE FUNCTIONS (Copied/Adapted from your combined script.js logic)
