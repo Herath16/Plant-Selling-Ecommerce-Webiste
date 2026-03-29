@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Shop Chatbot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2357b894' fill-opacity='0.1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      display: flex;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+      transition: background 0.5s ease;
+    }
+
+    /* Main container */
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 30px;
+    }
+
+    /* Information Panel */
+    .info-panel {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      max-width: 400px;
+    }
+
+    .shop-title {
+      color: #2b7a4b;
+      font-size: 2.2em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .shop-subtitle {
+      color: #57b894;
+      font-size: 1.1em;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .info-section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.3em;
+      color: #2b7a4b;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(87, 184, 148, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    .contact-item:hover {
+      background: rgba(87, 184, 148, 0.1);
+    }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #2b7a4b 0%, #57b894 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .plant-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .plant-image {
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .plant-image:hover {
+      transform: translateY(-5px);
+    }
+
+    .plant-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .plant-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(43, 122, 75, 0.85);
+      color: white;
+      padding: 5px;
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    .business-hours {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e0e0e0;
+    }
+
+    /* Chat container */
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.5s ease;
+    }
+
+    /* Header with nature pattern */
+    .chat-header {
+      background: linear-gradient(135deg, #2b7a4b 0%, #57b894 100%);
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.3em;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .chat-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='rgba(255,255,255,0.1)'%3E%3Cpath d='M0,0 L100,100 M100,0 L0,100' stroke='rgba(255,255,255,0.1)' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    
+    /* Theme toggle button */
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 16px;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(30deg);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Chat window */
+    .chat-window {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f9fbf7;
+      scroll-behavior: smooth;
+      transition: background 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Messages */
+    .message {
+      padding: 14px 18px;
+      border-radius: 18px;
+      max-width: 85%;
+      line-height: 1.5;
+      font-size: 0.95em;
+      position: relative;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .user {
+      background: linear-gradient(135deg, #c8efff 0%, #a0e0ff 100%);
+      margin-left: auto;
+      border-bottom-right-radius: 6px;
+    }
+    
+    .bot {
+      background: linear-gradient(135deg, #e2f6e5 0%, #c5ebcb 100%);
+      margin-right: auto;
+      border-bottom-left-radius: 6px;
+    }
+    
+    /* Message timestamp */
+    .timestamp {
+      display: block;
+      font-size: 0.7em;
+      opacity: 0.7;
+      margin-top: 5px;
+      text-align: right;
+    }
+    
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      padding: 12px 16px;
+      background: #e2f6e5;
+      border-radius: 18px;
+      max-width: 30%;
+      margin-right: auto;
+      margin-bottom: 8px;
+      animation: pulse 1.5s infinite;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: #57b894;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: typingAnimation 1.4s infinite;
+    }
+    
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes typingAnimation {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Input area */
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #e6e6e6;
+      background: #f9f9f9;
+      transition: background 0.5s ease;
+    }
+    
+    #user-input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 0.95em;
+      font-family: "Poppins", sans-serif;
+      transition: all 0.3s;
+      background: white;
+    }
+    
+    #user-input:focus {
+      border-color: #57b894;
+      box-shadow: 0 0 0 3px rgba(87, 184, 148, 0.3);
+      outline: none;
+    }
+
+    /* Send button */
+    #send-btn {
+      margin-left: 12px;
+      padding: 14px 18px;
+      border: none;
+      background: linear-gradient(135deg, #2b7a4b 0%, #57b894 100%);
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(43, 122, 75, 0.4);
+    }
+    
+    #send-btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Quick reply buttons */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .quick-reply-btn {
+      padding: 8px 14px;
+      background: rgba(87, 184, 148, 0.15);
+      border: 1px solid rgba(87, 184, 148, 0.3);
+      border-radius: 16px;
+      font-size: 0.85em;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #2b7a4b;
+    }
+    
+    .quick-reply-btn:hover {
+      background: rgba(87, 184, 148, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Animations */
+    @keyframes popIn {
+      from { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(10px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* DARK THEME */
+    .dark-mode body {
+      background: linear-gradient(rgba(20, 30, 24, 0.8), rgba(20, 30, 24, 0.8)), 
+                  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2357b894' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .dark-mode .chat-container {
+      background: rgba(30, 40, 34, 0.95);
+      border: 1px solid rgba(87, 184, 148, 0.2);
+    }
+    
+    .dark-mode .info-panel {
+      background: rgba(30, 40, 34, 0.9);
+      color: #e0e0e0;
+      border: 1px solid rgba(87, 184, 148, 0.2);
+    }
+    
+    .dark-mode .shop-title {
+      color: #57b894;
+    }
+    
+    .dark-mode .shop-subtitle {
+      color: #8dd0b3;
+    }
+    
+    .dark-mode .section-title {
+      color: #8dd0b3;
+      border-bottom: 2px solid rgba(141, 208, 179, 0.3);
+    }
+    
+    .dark-mode .contact-item:hover {
+      background: rgba(87, 184, 148, 0.15);
+    }
+    
+    .dark-mode .plant-name {
+      background: rgba(43, 122, 75, 0.9);
+    }
+    
+    .dark-mode .hours-row {
+      border-bottom: 1px dashed #3a4a3f;
+    }
+    
+    .dark-mode .chat-window {
+      background: #1a241f;
+    }
+    
+    .dark-mode .user {
+      background: linear-gradient(135deg, #2e5369 0%, #3a7ea6 100%);
+      color: #fff;
+    }
+    
+    .dark-mode .bot {
+      background: linear-gradient(135deg, #2b5439 0%, #3a7d51 100%);
+      color: #fff;
+    }
+    
+    .dark-mode .chat-input {
+      background: #1e2823;
+      border-top: 1px solid #2d3b32;
+    }
+    
+    .dark-mode #user-input {
+      background: #253028;
+      color: #e0e0e0;
+      border: 1px solid #2d3b32;
+    }
+    
+    .dark-mode #send-btn {
+      background: linear-gradient(135deg, #3a7d51 0%, #4a9e6b 100%);
+    }
+    
+    .dark-mode .quick-reply-btn {
+      background: rgba(87, 184, 148, 0.1);
+      border: 1px solid rgba(87, 184, 148, 0.2);
+      color: #57b894;
+    }
+    
+    .dark-mode .typing-indicator {
+      background: #2b5439;
+    }
+    
+    .dark-mode .typing-dot {
+      background: #57b894;
+    }
+
+    /* Responsive design */
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .info-panel {
+        max-width: 100%;
+        width: 100%;
+      }
+      
+      .chat-container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Main container -->
+  <div class="container">
+    <!-- Information Panel -->
+    <div class="info-panel">
+      <h1 class="shop-title">GreenLeaf Plant Shop</h1>
+      <p class="shop-subtitle">Bringing nature's beauty to your home</p>
+      
+      <div class="info-section">
+        <h2 class="section-title"><i class="fas fa-info-circle"></i> About Us</h2>
+        <p>We are a family-owned plant shop dedicated to providing the highest quality plants and gardening supplies. Our experts are here to help you create your perfect green space.</p>
+      </div>
+      
+      <div class="info-section">
+        <h2 class="section-title"><i class="fas fa-phone"></i> Contact Information</h2>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <span>+1 (555) 123-4567</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <span>info@greenleafplants.com</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <span>123 Garden Street, Bloomington, CA 92316</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-section">
+        <h2 class="section-title"><i class="fas fa-clock"></i> Business Hours</h2>
+        <div class="business-hours">
+          <div class="hours-row">
+            <span>Monday - Friday</span>
+            <span>9:00 AM - 7:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span>Saturday</span>
+            <span>10:00 AM - 6:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span>Sunday</span>
+            <span>11:00 AM - 4:00 PM</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-section">
+        <h2 class="section-title"><i class="fas fa-leaf"></i> Our Plants</h2>
+        <div class="plant-gallery">
+          <div class="plant-image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%2357b894' opacity='0.3'/%3E%3Cpath d='M75 30 L90 70 L70 85 L80 120 L70 135 L50 110 L30 135 L40 120 L20 85 L60 70 Z' fill='%232b7a4b'/%3E%3C/svg%3E" alt="Aloe Vera">
+            <div class="plant-name">Aloe Vera</div>
+          </div>
+          <div class="plant-image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%2357b894' opacity='0.3'/%3E%3Cpath d='M40 120 L40 60 L60 30 L90 30 L110 60 L110 120 Z' fill='%232b7a4b'/%3E%3Cpath d='M50 100 L60 70 L75 50 L90 70 L100 100' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E" alt="Snake Plant">
+            <div class="plant-name">Snake Plant</div>
+          </div>
+          <div class="plant-image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%2357b894' opacity='0.3'/%3E%3Ccircle cx='75' cy='60' r='30' fill='%23e91e63'/%3E%3Cpath d='M75 90 L75 140' stroke='%232b7a4b' stroke-width='5'/%3E%3C/svg%3E" alt="Rose Bush">
+            <div class="plant-name">Rose Bush</div>
+          </div>
+          <div class="plant-image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%2357b894' opacity='0.3'/%3E%3Ccircle cx='75' cy='50' r='40' fill='%23ffeb3b'/%3E%3Cpath d='M75 90 L75 140' stroke='%232b7a4b' stroke-width='5'/%3E%3C/svg%3E" alt="Sunflower">
+            <div class="plant-name">Sunflower</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat container -->
+    <div class="chat-container">
+      <div class="chat-header">
+        <i class="fas fa-seedling"></i> Planty - Your Plant Assistant
+        <button class="theme-toggle" id="theme-btn">🌙</button>
+      </div>
+      
+      <div id="chat-window" class="chat-window">
+        <!-- Messages will be added here -->
+      </div>
+      
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask about plants, care tips, or prices..." autocomplete="off" />
+        <button type="button" id="send-btn">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById("chat-window");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+    const themeBtn = document.getElementById("theme-btn");
+    const body = document.body;
+
+    // Get current time for timestamps
+    function getTime() {
+      const now = new Date();
+      return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    }
+
+    // Add message to chat
+    function appendMessage(text, sender) {
+      const msgDiv = document.createElement("div");
+      msgDiv.classList.add("message", sender);
+      
+      const msgContent = document.createElement("div");
+      msgContent.textContent = text;
+      msgDiv.appendChild(msgContent);
+      
+      const timestamp = document.createElement("span");
+      timestamp.classList.add("timestamp");
+      timestamp.textContent = getTime();
+      msgDiv.appendChild(timestamp);
+      
+      chatWindow.appendChild(msgDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    // Show typing indicator
+    function showTyping() {
+      const typingDiv = document.createElement("div");
+      typingDiv.classList.add("typing-indicator");
+      typingDiv.id = "typing-indicator";
+      
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.classList.add("typing-dot");
+        typingDiv.appendChild(dot);
+      }
+      
+      chatWindow.appendChild(typingDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    // Hide typing indicator
+    function hideTyping() {
+      const typingIndicator = document.getElementById("typing-indicator");
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+    }
+
+    // Show quick reply buttons
+    function showQuickReplies(replies) {
+      const quickRepliesDiv = document.createElement("div");
+      quickRepliesDiv.classList.add("quick-replies");
+      
+      replies.forEach(reply => {
+        const button = document.createElement("button");
+        button.classList.add("quick-reply-btn");
+        button.textContent = reply;
+        button.addEventListener("click", () => {
+          userInput.value = reply;
+          sendMessage();
+        });
+        quickRepliesDiv.appendChild(button);
+      });
+      
+      chatWindow.appendChild(quickRepliesDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    // Get bot response
+    function getBotReply(msg) {
+      msg = msg.toLowerCase();
+      
+      if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
+        return {
+          text: "Hello there! 👋 I'm Planty, your plant assistant. How can I help you today?",
+          quickReplies: ["Show me plants", "Care tips", "What's on sale?"]
+        };
+      }
+      
+      if (msg.includes("plant") || msg.includes("show") || msg.includes("see")) {
+        return {
+          text: "We have a wonderful selection! 🌿\n\n• Aloe Vera - $15 (great for beginners)\n• Snake Plant - $20 (purifies air)\n• Rose Bush - $25 (beautiful flowers)\n• Fiddle Leaf Fig - $45 (trendy indoor plant)\n\nWhich one interests you?",
+          quickReplies: ["Aloe Vera details", "Snake Plant care", "Rose Bush price"]
+        };
+      }
+      
+      if (msg.includes("aloe")) {
+        return {
+          text: "Aloe Vera is $15 🌱\n\n• Loves bright, indirect sunlight\n• Water every 2-3 weeks\n• Great for skin care\n• Pet-friendly (non-toxic)\n\nWould you like to know about care tips or purchase one?",
+          quickReplies: ["Care tips for Aloe", "Purchase Aloe Vera"]
+        };
+      }
+      
+      if (msg.includes("snake") || msg.includes("sansevieria")) {
+        return {
+          text: "Snake Plant is $20 🌵\n\n• Thrives in low light\n• Water only when soil is dry\n• Excellent air purifier\n• Very hard to kill (perfect for beginners!)\n\nIt's one of our most popular plants!",
+          quickReplies: ["Snake Plant care", "Purchase Snake Plant"]
+        };
+      }
+      
+      if (msg.includes("rose")) {
+        return {
+          text: "Rose Bush is $25 🌹\n\n• Needs 6+ hours of sunlight daily\n• Water 2-3 times per week\n• Beautiful fragrant flowers\n• Perfect for gardens or large pots\n\nAvailable in red, pink, white, and yellow varieties.",
+          quickReplies: ["Rose care tips", "Purchase Rose Bush"]
+        };
+      }
+      
+      if (msg.includes("care") || msg.includes("tip")) {
+        return {
+          text: "General Plant Care Tips 💧\n\n1. Most plants prefer indirect sunlight\n2. Overwatering is worse than underwatering\n3. Use pots with drainage holes\n4. Fertilize during growing season (spring/summer)\n5. Dust leaves occasionally for better photosynthesis\n\nAny specific plant you need tips for?",
+          quickReplies: ["Aloe care", "Snake plant care", "Rose care"]
+        };
+      }
+      
+      if (msg.includes("price") || msg.includes("cost") || msg.includes("how much")) {
+        return {
+          text: "Our price range:\n\n• Small plants: $10-20\n• Medium plants: $20-40\n• Large plants: $40-60\n• Specialty plants: $60+\n\nWe also have pots, soil, and accessories. Any specific plant you're interested in?",
+          quickReplies: ["Aloe Vera price", "Snake Plant price", "Rose Bush price"]
+        };
+      }
+      
+      if (msg.includes("thank")) {
+        return {
+          text: "You're very welcome! 😊 Let me know if you need anything else. Happy planting! 🌿",
+          quickReplies: ["See plants again", "Care tips", "Contact support"]
+        };
+      }
+      
+      return {
+        text: "I'm not sure I understand. I can help with plant information, care tips, prices, or purchases. What would you like to know?",
+        quickReplies: ["Show me plants", "Care tips", "What's on sale?"]
+      };
+    }
+
+    // Send message function
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      
+      appendMessage(text, "user");
+      userInput.value = "";
+      
+      showTyping();
+      
+      setTimeout(() => {
+        hideTyping();
+        const reply = getBotReply(text);
+        appendMessage(reply.text, "bot");
+        if (reply.quickReplies) {
+          showQuickReplies(reply.quickReplies);
+        }
+      }, 1500);
+    }
+
+    // Initial bot message
+    setTimeout(() => {
+      appendMessage("Hi there! I'm Planty, your personal plant assistant. 🌱 How can I help you today?", "bot");
+      showQuickReplies(["Show me plants", "Care tips", "What's on sale?"]);
+    }, 500);
+
+    // Event listeners
+    sendBtn.addEventListener("click", sendMessage);
+    
+    userInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+    
+    themeBtn.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
+      themeBtn.textContent = body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    });
+  </script>
+</body>
+</html>
